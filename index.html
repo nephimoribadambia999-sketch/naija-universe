@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naija Universe - 100% YOURS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050505;color:#FFD700;font-family:monospace;max-width:480px;margin:0 auto;border:2px solid #FFD700;min-height:100vh}
+.top{text-align:center;padding:16px;border-bottom:2px solid #FFD700}
+.stats{display:flex;justify-content:space-between;padding:12px;margin:12px;border:1px solid #FFD700}
+.card{margin:12px;border:1px solid #FFD700;padding:8px}
+.card .head{background:#FFD700;color:#000;padding:4px;font-weight:bold}
+.log{margin:12px;border:1px solid #333;background:#111;padding:8px;min-height:70px;font-size:12px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px}
+button{background:#111;border:1px solid #FFD700;color:#FFD700;padding:14px;cursor:pointer;font-family:monospace}
+button:active{background:#FFD700;color:#000}
+.states{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+</style>
+</head>
+<body>
+<div class="top"><h1>✦ NAIJA UNIVERSE</h1><div style="font-size:10px">100% YOURS • CRASH-PROOF • 36 STATES</div></div>
+<div class="stats">
+<div>🪙 ₦<span id="cash">2400000</span><br><small>CASH</small></div>
+<div>⚡ <span id="energy">100</span>/100<br><small>ENERGY</small></div>
+<div>⭐ LV.<span id="lvl">1</span><br><small id="rank">HUSTLER</small></div>
+</div>
+<div class="card"><div class="head">📍 <span id="loc">RIVERS • PH OIL</span></div><div style="font-size:11px" id="desc">OIL REGION • HIGH OPPORTUNITY</div><div style="font-size:10px">Travel: <span id="tcost">₦5k</span> | Work: ~₦<span id="wage">160k</span></div></div>
+<div class="log" id="log">Welcome Boss Nephi! You start PH with ₦2.4M. This version saves forever!</div>
+<div class="btns">
+<button onclick="work()">🔨 Work Shift<br><small id="wbtn">~₦160k</small></button>
+<button onclick="travelList()">🚌 Travel<br><small>₦5k bus</small></button>
+<button onclick="buyKeke()" id="kekeBtn">🛺 Keke ₦40k<br><small>Daily +₦40k</small></button>
+<button onclick="buyBenz()" id="benzBtn">🚗 Benz ₦800k<br><small>Free Travel VIP</small></button>
+</div>
+<div class="card"><div style="font-size:12px">TRAVEL TO ANOTHER STATE:</div><div class="states" id="states"></div></div>
+<div style="text-align:center;padding:12px;font-size:10px;opacity:0.6">Owner: Nephi Moriba • GitHub Backup • Works without Vercel<br>github.com/nephimoribadambia999-sketch/naija-universe</div>
+<script>
+let cash=2400000, energy=100, lvl=1, hasKeke=false, hasBenz=false;
+let current={id:'rivers',name:'RIVERS',city:'PH OIL',wage:160000,desc:'OIL REGION'};
+const STATES=[
+{id:'rivers',name:'RIVERS',city:'PH OIL',wage:160000,desc:'OIL REGION'},
+{id:'lagos',name:'LAGOS',city:'IKEJA',wage:180000,desc:'COMMERCE CAPITAL'},
+{id:'kano',name:'KANO',city:'KANO TRADE',wage:120000,desc:'NORTHERN TRADE'},
+{id:'fct',name:'FCT',city:'ABUJA ASO ROCK',wage:500000,desc:'FINAL DESTINATION'},
+{id:'anambra',name:'ANAMBRA',city:'ONITSHA',wage:140000,desc:'EASTERN MARKET'},
+{id:'oyo',name:'OYO',city:'IBADAN',wage:110000,desc:'WESTERN HEARTLAND'},
+{id:'delta',name:'DELTA',city:'WARRI OIL',wage:150000,desc:'OIL HUB'},
+{id:'imo',name:'IMO',city:'OWERRI',wage:100000,desc:'EASTERN HUB'},
+{id:'kaduna',name:'KADUNA',city:'KADUNA',wage:110000,desc:'NORTHERN GATEWAY'}
+];
+function update(){
+document.getElementById('cash').innerText=cash.toLocaleString();
+document.getElementById('energy').innerText=energy;
+document.getElementById('lvl').innerText=lvl.toFixed(1);
+document.getElementById('loc').innerText=current.name+' • '+current.city;
+document.getElementById('desc').innerText=current.desc;
+document.getElementById('wage').innerText=(current.wage/1000)+'k';
+document.getElementById('wbtn').innerText='~₦'+(current.wage/1000)+'k';
+document.getElementById('tcost').innerText=hasBenz?'FREE (Benz)':'₦5k';
+document.getElementById('rank').innerText=hasBenz?'VIP':(hasKeke?'KING OF STREET':'HUSTLER');
+document.getElementById('kekeBtn').innerHTML=hasKeke?'🛺 Keke OWNED<br><small>+₦40k daily</small>':'🛺 Keke ₦40k<br><small>Daily +₦40k</small>';
+document.getElementById('benzBtn').innerHTML=hasBenz?'🚗 Benz OWNED<br><small>Free Travel VIP</small>':'🚗 Benz ₦800k<br><small>Free Travel VIP</small>';
+localStorage.setItem('naija_save',JSON.stringify({cash,energy,lvl,hasKeke,hasBenz,current}));
+}
+function addLog(m){let l=document.getElementById('log');l.innerHTML='<div style="color:gold">'+m+'</div><div style="opacity:0.6">'+l.innerHTML+'</div>'.slice(0,500);}
+function work(){if(energy<15){addLog('⚡ Energy low! Rest...');return;}let earn=current.wage+(hasKeke?40000:0);cash+=earn;energy-=15;lvl+=0.2;addLog('✅ Worked in '+current.name+' +₦'+earn.toLocaleString());update();}
+function buyKeke(){if(hasKeke){addLog('You already get Keke!');return;}if(cash<40000){addLog('❌ Need ₦40k for Keke');return;}cash-=40000;hasKeke=true;addLog('🛺 Keke bought! Daily +₦40k');update();}
+function buyBenz(){if(hasBenz){addLog('Already VIP!');return;}if(cash<800000){addLog('❌ Need ₦800k for Benz');return;}cash-=800000;hasBenz=true;addLog('🚙 Benz VIP! Free travel forever');update();}
+function travel(s){if(s.id===current.id)return;let cost=hasBenz?0:5000;if(cash<cost){addLog('❌ No money for bus');return;}cash-=cost;current=s;energy=Math.max(10,energy-10);addLog(cost===0?'🚗 Benz free to '+s.name:'🚌 Bus to '+s.name+' -₦'+cost);update();renderStates();}
+function renderStates(){let c=document.getElementById('states');c.innerHTML='';STATES.forEach(s=>{let b=document.createElement('button');b.innerText=s.name;b.style.background=s.id===current.id?'gold':'#111';b.style.color=s.id===current.id?'#000':'gold';b.style.border='1px solid gold';b.style.padding='10px';b.style.fontSize='11px';b.onclick=()=>travel(s);c.appendChild(b);});}
+function travelList(){document.getElementById('states').scrollIntoView({behavior:'smooth'});}
+let save=localStorage.getItem('naija_save');if(save){try{let d=JSON.parse(save);cash=d.cash;energy=d.energy;lvl=d.lvl;hasKeke=d.hasKeke;hasBenz=d.hasBenz;current=d.current;}catch(e){}}
+update();renderStates();
+</script>
+</body>
+</html>
